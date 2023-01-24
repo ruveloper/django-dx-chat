@@ -12,6 +12,7 @@ uvicorn[standard]==0.20.0  # https://github.com/encode/uvicorn
 # ------------------------------------------------------------------------------
 django==4.0.8  # pyup: < 4.1  # https://www.djangoproject.com/
 channels==4.0.0 # https://github.com/django/channels
+channels-redis==4.0.0 # https://github.com/django/channels_redis/
 django-environ==0.9.0  # https://github.com/joke2k/django-environ
 django-compressor==4.3  # https://github.com/django-compressor/django-compressor
 

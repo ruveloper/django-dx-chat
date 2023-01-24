@@ -81,8 +81,11 @@ DJANGO_APPS = [
     "django.contrib.admin",
     "django.forms",
 ]
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = [
+    "channels",
+]
 LOCAL_APPS = [
+    "apps.chat",
     "apps.website",
 ]
 
@@ -257,8 +260,20 @@ LOGGING = {
 
 # * -------------------------- THIRD-PARTY CONFIG ------------------------------
 
-# django-compressor
+# DJANGO COMPRESSOR
 # ------------------------------------------------------------------------------
 # https://django-compressor.readthedocs.io/en/latest/quickstart/#installation
 INSTALLED_APPS += ["compressor"]
 STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
+
+# DJANGO CHANNELS
+# ------------------------------------------------------------------------------
+# https://channels.readthedocs.io/en/stable/
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(env("REDIS_HOST"), env.int("REDIS_PORT"))],
+        },
+    },
+}

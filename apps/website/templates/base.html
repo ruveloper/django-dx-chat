@@ -1,0 +1,74 @@
+{% load static i18n compress %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Django HTMX Chat{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chat web application example using Django and HTMX">
+    <meta name="author" content="Ruben Caballero">
+
+    <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}">
+
+    {% block css %}
+        <!-- Vendor CSS -->
+        <link href="{% static 'vendor/flowbite/flowbite_1.6.2.min.css' %}" rel="stylesheet">
+
+        <!-- Tailwind CSS -->
+        <link href="{% static 'css/dist/output.css' %}" rel="stylesheet">
+
+        <!-- Project CSS -->
+        {% compress css %}
+            <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+        {% endcompress %}
+    {% endblock %}
+    <!-- Le javascript
+    ================================================== -->
+    {# Placed at the top of the document so pages load faster with defer #}
+    {% block javascript %}
+        <!-- Vendor JS -->
+        <script defer src="{% static 'vendor/flowbite/flowbite_1.6.2.min.js' %}"></script>
+
+        <!-- Project file -->
+        {% compress js %}
+            <script defer src="{% static 'js/main.js' %}"></script>
+        {% endcompress %}
+
+    {% endblock javascript %}
+
+</head>
+
+<body>
+
+<div>
+    <nav class="navbar">
+    </nav>
+</div>
+
+<div class="container">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+    {% block content %}
+
+    {% endblock content %}
+
+</div> <!-- /container -->
+
+{% block modal %}
+
+{% endblock modal %}
+
+{% block inline_javascript %}
+{% endblock inline_javascript %}
+</body>
+</html>

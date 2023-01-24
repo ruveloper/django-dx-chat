@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}Bad request(400){% endblock %}
+
+{% block content %}
+    <h1>Bad request(400)</h1>
+
+    <p>{% if exception %}{{ exception }}{% else %}The server was not able to understand the request.{% endif %}</p>
+{% endblock content %}

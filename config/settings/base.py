@@ -49,12 +49,24 @@ DATABASES["default"]["ATOMIC_REQUESTS"] = True
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# CACHES
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/4.1/ref/settings/#caches
+CACHES = {
+    "default": {
+        # https://docs.djangoproject.com/en/4.1/topics/cache/#redis
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f'redis://{env("REDIS_HOST")}:{env("REDIS_PORT")}',
+    }
+}
+
 # URLS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
 ROOT_URLCONF = "config.urls"
 # https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = "config.wsgi.application"
+ASGI_APPLICATION = "config.asgi.application"
 
 # APPLICATIONS
 # ------------------------------------------------------------------------------

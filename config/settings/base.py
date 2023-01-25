@@ -4,6 +4,7 @@ Base settings to build other settings files upon.
 from pathlib import Path
 
 import environ
+from django.utils.translation import gettext_lazy as _
 
 # DIRECTORIES
 # ------------------------------------------------------------------------------
@@ -26,7 +27,9 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 TIME_ZONE = "America/Bogota"
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en"
+# https://docs.djangoproject.com/en/dev/ref/settings/#languages
+LANGUAGES = (("en", _("English")),)
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
@@ -86,6 +89,7 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     "apps.chat",
+    "apps.core",
     "apps.website",
 ]
 
@@ -94,6 +98,8 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # AUTHENTICATION
 # ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-user-model
+AUTH_USER_MODEL = "core.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",

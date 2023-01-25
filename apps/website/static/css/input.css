@@ -1,0 +1,12 @@
+/* ! ------------------------ TAILWIND RELATED STYLES ------------------------ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* * ---- Custom Styles ---- */
+@layer base {
+    .text-content ul {
+        @apply list-disc list-inside;
+    }
+}
+/* ! ------------------------------------------------------------------------- */

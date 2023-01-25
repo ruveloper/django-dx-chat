@@ -19,7 +19,6 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -58,8 +57,6 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
-static/
 
 # Sphinx documentation
 docs/_build/
@@ -182,6 +179,9 @@ typings/
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
+
+# Ucommited changes
+.idea/shelf/
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/

@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
 from django.views import defaults as default_views
@@ -9,9 +8,6 @@ from django.views import defaults as default_views
 urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
-    # * ---- ACCOUNT URL PATTERNS ----
-    path("login/", LoginView.as_view(), name="login"),
-    path("logout/", LogoutView.as_view(), name="logout"),
     # * ------ APP URL PATTERNS ------
     path("", include("apps.website.urls", namespace="website")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
@@ -41,4 +37,10 @@ if settings.DEBUG:
             kwargs={"exception": Exception("Page not Found")},
         ),
         path("500/", default_views.server_error),
+    ]
+
+# * Third-Party debug url patterns
+if settings.DEBUG:
+    urlpatterns += [
+        path("__reload__/", include("django_browser_reload.urls")),
     ]

@@ -86,6 +86,7 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     "channels",
+    "django_browser_reload",
 ]
 LOCAL_APPS = [
     "apps.chat",
@@ -106,7 +107,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 # Auth URL declarations using the main urlpatterns
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
-LOGIN_URL = "login"
+LOGIN_URL = "website:login"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
 LOGIN_REDIRECT_URL = "website:homepage"
 # https://docs.djangoproject.com/en/dev/ref/settings/#logout-redirect-url
@@ -146,6 +147,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Django browser reload
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 # STATIC

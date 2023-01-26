@@ -86,7 +86,6 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     "channels",
-    "django_browser_reload",
 ]
 LOCAL_APPS = [
     "apps.chat",
@@ -147,8 +146,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # Django browser reload
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 # STATIC

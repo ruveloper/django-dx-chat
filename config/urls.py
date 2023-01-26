@@ -38,9 +38,3 @@ if settings.DEBUG:
         ),
         path("500/", default_views.server_error),
     ]
-
-# * Third-Party debug url patterns
-if settings.DEBUG:
-    urlpatterns += [
-        path("__reload__/", include("django_browser_reload.urls")),
-    ]

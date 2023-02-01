@@ -32,8 +32,22 @@ django_application = get_asgi_application()
 # Import websocket application here, so apps from django_application are loaded first
 from apps.chat import routing  # noqa isort:skip
 from channels.routing import ProtocolTypeRouter, URLRouter  # noqa isort:skip
+from channels.security.websocket import AllowedHostsOriginValidator  # noqa isort:skip
+from channels.auth import AuthMiddlewareStack  # noqa isort:skip
 
 # ProtocolTypeRouter determines which application should handle incoming requests based on their protocol type
 application = ProtocolTypeRouter(
-    {"http": django_application, "websocket": URLRouter(routing.websocket_urlpatterns)}
+    {
+        "http": django_application,
+        "websocket": AllowedHostsOriginValidator(
+            # https://channels.readthedocs.io/en/latest/topics/security.html#security
+            AuthMiddlewareStack(
+                # https://channels.readthedocs.io/en/latest/topics/authentication.html#django-authentication
+                URLRouter(
+                    # https://channels.readthedocs.io/en/latest/topics/routing.html#routing
+                    routing.websocket_urlpatterns
+                ),
+            )
+        ),
+    }
 )

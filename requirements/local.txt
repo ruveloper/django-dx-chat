@@ -2,6 +2,9 @@
 
 psycopg2-binary==2.9.5  # https://github.com/psycopg/psycopg2
 
+# ASGI server for django channels
+daphne==4.0.0 # https://github.com/django/daphne
+
 # Code quality
 # ------------------------------------------------------------------------------
 flake8==6.0.0  # https://github.com/PyCQA/flake8

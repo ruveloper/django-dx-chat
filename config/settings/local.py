@@ -37,6 +37,18 @@ EMAIL_BACKEND = env(
 
 # * -------------------------- THIRD-PARTY CONFIG ------------------------------
 
+# DJANGO CHANNELS
+# ------------------------------------------------------------------------------
+# https://channels.readthedocs.io/en/stable/
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+
+# DAPHNE ASGI SERVER
+# ------------------------------------------------------------------------------
+# Allow Daphne’s ASGI version of the runserver management command
+INSTALLED_APPS = [
+    "daphne",
+] + INSTALLED_APPS  # noqa F405
+
 # WhiteNoise
 # ------------------------------------------------------------------------------
 # http://whitenoise.evans.io/en/latest/django.html#using-whitenoise-in-development

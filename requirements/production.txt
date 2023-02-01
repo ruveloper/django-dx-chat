@@ -3,4 +3,5 @@
 -r base.txt
 
 gunicorn==20.1.0  # https://github.com/benoitc/gunicorn
+uvicorn==0.20.0 # https://github.com/encode/uvicorn
 psycopg2==2.9.5  # https://github.com/psycopg/psycopg2

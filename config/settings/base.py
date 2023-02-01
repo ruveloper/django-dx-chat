@@ -45,7 +45,7 @@ USE_TZ = True
 DATABASES = {
     "default": env.db(
         "DATABASE_URL",
-        default="postgres://localhost/django_htmx_chat",
+        default="postgres://localhost/django_dx_chat",
     ),
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True

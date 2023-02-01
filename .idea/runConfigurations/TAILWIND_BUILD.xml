@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="TAILWIND_BUILD" type="ShConfigurationType">
-    <option name="SCRIPT_TEXT" value="./tailwindcss-windows-x64.exe -i ./apps/website/static/css/styles.css -o ./apps/website/static/css/dist/output.css --minify" />
+    <option name="SCRIPT_TEXT" value="./tailwindcss-windows-x64.exe -i ./apps/website/static/css/input.css -o ./apps/website/static/css/dist/output.css --minify" />
     <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
     <option name="SCRIPT_PATH" value="tailwindcss-windows-x64.exe" />
     <option name="SCRIPT_OPTIONS" value="-i ./apps/static/css/styles.css -o ./apps/static/css/dist/output.css --minify" />

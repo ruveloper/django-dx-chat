@@ -1,5 +1,5 @@
 """
-WSGI config for Django HTMX Chat project.
+WSGI config for Django Dx Chat project.
 
 This module contains the WSGI application used by Django's development server
 and any production WSGI deployments. It should expose a module-level variable

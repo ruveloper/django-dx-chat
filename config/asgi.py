@@ -1,5 +1,5 @@
 """
-ASGI config for Django HTMX Chat project.
+ASGI config for Django Dx Chat project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

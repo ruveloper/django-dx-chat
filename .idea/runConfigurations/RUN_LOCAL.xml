@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="RUN_LOCAL" type="Python.DjangoServer" factoryName="Django server">
-    <module name="django_htmx_chat" />
+    <module name="django_dx_chat" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>

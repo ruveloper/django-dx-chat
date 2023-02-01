@@ -52,17 +52,6 @@ DATABASES["default"]["ATOMIC_REQUESTS"] = True
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# CACHES
-# ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/4.1/ref/settings/#caches
-CACHES = {
-    "default": {
-        # https://docs.djangoproject.com/en/4.1/topics/cache/#redis
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f'redis://{env("REDIS_HOST")}:{env("REDIS_PORT")}',
-    }
-}
-
 # URLS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
@@ -271,15 +260,3 @@ LOGGING = {
 # https://django-compressor.readthedocs.io/en/latest/quickstart/#installation
 INSTALLED_APPS += ["compressor"]
 STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
-
-# DJANGO CHANNELS
-# ------------------------------------------------------------------------------
-# https://channels.readthedocs.io/en/stable/
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [(env("REDIS_HOST"), env.int("REDIS_PORT"))],
-        },
-    },
-}

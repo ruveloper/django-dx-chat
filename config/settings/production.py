@@ -14,11 +14,12 @@ DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # no
 
 # CACHES
 # ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#caches
+# https://docs.djangoproject.com/en/4.1/ref/settings/#caches
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "",
+        # https://docs.djangoproject.com/en/4.1/topics/cache/#redis
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f'redis://{env("REDIS_HOST")}:{env("REDIS_PORT")}',
     }
 }
 
@@ -147,4 +148,16 @@ COMPRESS_FILTERS = {
         "compressor.filters.cssmin.rCSSMinFilter",
     ],
     "js": ["compressor.filters.jsmin.JSMinFilter"],
+}
+
+# DJANGO CHANNELS
+# ------------------------------------------------------------------------------
+# https://channels.readthedocs.io/en/stable/
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(env("REDIS_HOST"), env.int("REDIS_PORT"))],
+        },
+    },
 }

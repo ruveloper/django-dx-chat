@@ -3,6 +3,10 @@ from django.core.cache import cache
 
 
 class OnlineUsersCache:
+    """
+    Module to store and manage the list of online users using the cache system.
+    """
+
     User = get_user_model()
 
     @staticmethod
@@ -10,7 +14,7 @@ class OnlineUsersCache:
         return cache.get("online_users", [])
 
     @classmethod
-    def set_online_user(cls, user: User):
+    def add_online_user(cls, user: User):
         online_users: list = cls.get_online_users()
         if user not in online_users:
             online_users.append(user)
@@ -20,6 +24,7 @@ class OnlineUsersCache:
     def remove_online_user(cls, user: User):
         online_users: list = cls.get_online_users()
         online_users.remove(user) if user in online_users else None
+        cache.set("online_users", online_users)
 
     @classmethod
     def get_online_users_info_as_dict(cls):

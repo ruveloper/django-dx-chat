@@ -27,7 +27,7 @@ class StateConsumer(JsonWebsocketConsumer):
         self.accept()
         logger.info(f"Connected websocket state for {self.user.username}")
         # * ------ Add user to online users ------
-        OnlineUsersCache.set_online_user(self.user)
+        OnlineUsersCache.add_online_user(self.user)
         # * ----------- CHANNEL LAYERS -----------
         # Create channel layer with using the chat room name
         async_to_sync(self.channel_layer.group_add)(

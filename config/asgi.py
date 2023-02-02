@@ -7,19 +7,22 @@ For more information on this file, see
 https://docs.djangoproject.com/en/dev/howto/deployment/asgi/
 
 """
-import os
 import sys
 from pathlib import Path
 
 from django.core.asgi import get_asgi_application
+
+from config.settings.base import env
 
 # This allows easy placement of apps within the interior
 # apps directory.
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent
 sys.path.append(str(ROOT_DIR / "apps"))
 
+# GET SETTINGS MODULE
+# ---------------------------------------------------------------------------
 # If DJANGO_SETTINGS_MODULE is unset, default to the local settings
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
+env("DJANGO_SETTINGS_MODULE", default="config.settings.local")
 
 # This application object is used by any ASGI server configured to use this file.
 django_application = get_asgi_application()

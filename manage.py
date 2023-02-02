@@ -1,10 +1,15 @@
 #!/usr/bin/env python
-import os
 import sys
 from pathlib import Path
 
+from config.settings.base import env
+
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
+
+    # GET SETTINGS MODULE
+    # ---------------------------------------------------------------------------
+    # If DJANGO_SETTINGS_MODULE is unset, default to the local settings
+    env("DJANGO_SETTINGS_MODULE", default="config.settings.local")
 
     try:
         from django.core.management import execute_from_command_line

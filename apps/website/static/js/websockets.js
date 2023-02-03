@@ -30,7 +30,8 @@ let userChatMessages = {} // ex: { username1: [ {type: "", user: "", message: ""
 let usersWebsockets = {}; // ex: { username1: userWebsocket:WebSocket, username2:  ... }
 let activeUserWebsocket = null;
 let activeChatUser = null;
-let activeLoggedUser = null
+let activeLoggedUser = null;
+let activeSendChatMessage = false;
 
 // * Listerners
 // * Chat Messages Windows Scroll -
@@ -208,7 +209,24 @@ function storeChatMessage(chatUser, type, user, message) {
     })
 }
 
+function activateSendChatMessage(loggedUser, chatUser, connectedUsers) {
+    // * If both users are connected, active function (and html elements) to send chat messages,
+    // * otherwise, desactivate
+    if(connectedUsers.includes(loggedUser) && connectedUsers.includes(chatUser) ){
+        chatInputMessageEl.removeAttribute("disabled");
+        chatSendMessageEl.removeAttribute("disabled");
+        activeSendChatMessage = true;
+    } else {
+        chatInputMessageEl.setAttribute("disabled", "");
+        chatSendMessageEl.setAttribute("disabled", "");
+        activeSendChatMessage = false;
+    }
+}
+
 function sendChatMessage() {
+    if(!activeSendChatMessage){
+        return;
+    }
     // Get message from chat input
     const inputMessage = chatInputMessageEl.value;
     if (!inputMessage) return
@@ -266,8 +284,12 @@ function connectUserWebsocket(chatUser) {
     };
     userWebsocket.onmessage = function (e) {
         const data = JSON.parse(e.data)
-        // Accept the message if is a chat.* type
-        if (data["type"].includes("chat")) {
+        // * Handle chat room type messages
+        if(data["type"].includes("chat.room.users")) {
+            activateSendChatMessage(data["user"], data["chat_user"], data["message"])
+        }
+        // * Handle chat user messages and information type
+        if (data["type"].includes("chat.message") || data["type"].includes("chat.information")) {
             // Add message to chat window if correspond to the active chat user or the logged user
             if (data["user"] === activeChatUser || data["user"] === activeLoggedUser) {
                 addChatMessage(data["type"], data["user"], data["message"])

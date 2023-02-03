@@ -5,6 +5,7 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import JsonWebsocketConsumer
 from django.contrib.auth import get_user_model
 
+from apps.chat.modules.cache import ChatRoomsCache
 from apps.chat.utils import generate_chat_room_name
 
 User = get_user_model()
@@ -76,7 +77,6 @@ class ChatConsumer(JsonWebsocketConsumer):
         self.user: User = self.scope["user"]
         if not self.user.is_authenticated:
             return
-
         # Get chat user from query params and generate room if exists
         query_params = dict(parse_qsl(self.scope["query_string"].decode("utf-8")))
         self.chat_user = query_params["chat_user"]
@@ -85,19 +85,17 @@ class ChatConsumer(JsonWebsocketConsumer):
         )
         if not self.chat_room_name:
             return
-
         # Connect websocket
         self.accept()
-        logger.info(
-            f"Connected websocket for {self.chat_user} in chat room {self.chat_room_name}"
-        )
-
+        logger.info(f"Connected websocket for {self.chat_user} in chat room {self.chat_room_name}")  # fmt: skip
+        # * -------- Add user to chat room -------
+        ChatRoomsCache.add_user_to_chat_room(self.chat_room_name, self.user)
         # * ----------- CHANNEL LAYERS -----------
         # Create channel layer with using the chat room name
-        async_to_sync(self.channel_layer.group_add)(
-            self.chat_room_name, self.channel_name
-        )
-        # Send confirmation message to group
+        async_to_sync(self.channel_layer.group_add)(self.chat_room_name, self.channel_name)  # fmt: skip
+        # * Send users connected in the chat room
+        self.send_chat_room_users_connected()
+        # * Send connection confirmation message to group
         self.send_to_channel_group(
             {
                 "type": "chat.information",
@@ -118,6 +116,10 @@ class ChatConsumer(JsonWebsocketConsumer):
         return super().receive_json(content, **kwargs)
 
     def disconnect(self, code):
+        # * -------- Add user to chat room -------
+        ChatRoomsCache.remove_user_from_chat_room(self.chat_room_name, self.user)
+        # * Send users connected in the chat room
+        self.send_chat_room_users_connected()
         # Send a notification message to the channel group
         self.send_to_channel_group(
             {
@@ -126,20 +128,29 @@ class ChatConsumer(JsonWebsocketConsumer):
                 "message": f"The user {self.user.username} has left the chat room.",
             }
         )
-        # Remove channel layer
-        async_to_sync(self.channel_layer.group_discard)(
-            self.chat_room_name, self.channel_name
-        )
-        logger.info(
-            f"Disconnected websocket for {self.chat_user} in chat room {self.chat_room_name}"
-        )
+        # * Remove channel layer
+        async_to_sync(self.channel_layer.group_discard)(self.chat_room_name, self.channel_name)  # fmt: skip
+        logger.info(f"Disconnected websocket for {self.chat_user} in chat room {self.chat_room_name}")  # fmt: skip
         return super().disconnect(code)
 
     # * FUNCTIONS
     def send_to_channel_group(self, obj: dict):
         async_to_sync(self.channel_layer.group_send)(self.chat_room_name, obj)
 
+    def send_chat_room_users_connected(self):
+        self.send_to_channel_group(
+            {
+                "type": "chat.room.users",
+                "user": self.user.username,
+                "chat_user": self.chat_user,
+                "message": ChatRoomsCache.get_chat_room_usernames_as_list(self.chat_room_name),  # fmt: skip
+            }
+        )
+
     # * HANDLERS
+    def chat_room_users(self, obj: dict):
+        self.send_json(obj)
+
     def chat_information(self, obj: dict):
         self.send_json(obj)
 

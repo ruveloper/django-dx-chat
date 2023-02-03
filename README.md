@@ -1,6 +1,6 @@
-# Django HTMX Chat
+# Django dxChat
 
-Chat web application using Django, Django Channels and web technologies (HTML, CSS, JavaScript).
+Chat web application using Django, Django Channels, Websockets and Web Technologies (HTML, CSS, JavaScript).
 
 [![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
 [![Black code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
@@ -11,26 +11,24 @@ Chat web application using Django, Django Channels and web technologies (HTML, C
 [![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)](http://www.djangoproject.com/)
 [![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindui.com/)
 
-License: MIT
+## Features
 
-### Project Features
+### Project-wide features
 
-* Realtime Application
-* ASGI server
-* HTTP and Websockets implementation
-* User authentication
-* Protected routes
+* Real-time updates through Django Channels and ASGI server
+* HTTP and Websockets protocols implementation
+* Cache system modules to manage online users and chat rooms
+* User authentication and protected routes
 * HTML templates system
-* Custom user model
-* Scalable project folder structure
-* Production ready project template
+* Scalable project structure
+* Production-ready setup
 
-### Chat App features
+### Chat client features
 
 * Light and Dark theme
 * Responsive design
-* Sign Up, Sign In and Log Out
-* Echo chat to test the websocket connection
+* Sign Up, Sign In and Log Out functionality
+* Echo chat to test websocket connection
 * List of users online
 * Temporally store chat messages
 

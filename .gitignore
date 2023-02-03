@@ -1,4 +1,5 @@
 ### PROJECT SPECIFIC
+.env
 apps/media/
 media/
 # SQLite Databases

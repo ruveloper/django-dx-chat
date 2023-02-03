@@ -12,6 +12,8 @@ SECRET_KEY = env(
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+# https://docs.djangoproject.com/en/stable/ref/settings/#internal-ips
+INTERNAL_IPS = ALLOWED_HOSTS
 
 # DATABASES
 # ------------------------------------------------------------------------------
@@ -53,3 +55,13 @@ INSTALLED_APPS = [
 # ------------------------------------------------------------------------------
 # http://whitenoise.evans.io/en/latest/django.html#using-whitenoise-in-development
 INSTALLED_APPS = ["whitenoise.runserver_nostatic"] + INSTALLED_APPS  # noqa F405
+
+# * Google reCaptcha v3
+# * ------------------------------------------------------------------------------
+RECAPTCHA_PUBLIC_KEY = env(
+    "RECAPTCHA_PUBLIC_KEY", default="6mPas--PLACEHOLDER_KEY--3226_"
+)
+RECAPTCHA_PRIVATE_KEY = env(
+    "RECAPTCHA_PRIVATE_KEY", default="6mPas--PLACEHOLDER_KEY--3226_"
+)
+RECAPTCHA_REQUIRED_SCORE = env.float("RECAPTCHA_REQUIRED_SCORE", default=0.85)

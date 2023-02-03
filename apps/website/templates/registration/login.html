@@ -14,7 +14,7 @@
                     Sign in to your account
                 </h1>
 
-                <form class="space-y-4 md:space-y-6" method="post" novalidate>
+                <form id="login-form" class="space-y-4 md:space-y-6" method="post" novalidate>
 
                     {% csrf_token %}
 
@@ -46,7 +46,12 @@
                     </div>
 
                     <button type="submit"
-                            class="w-full text-white bg-blue-600 hover:bg-blue-700
+                        {% if not debug %}
+                            data-sitekey="{{ g_recaptcha_publickey }}"
+                            data-callback='onSubmitLoginForm'
+                            data-action='submit'
+                        {% endif %}
+                            class="g-recaptcha w-full text-white bg-blue-600 hover:bg-blue-700
                                 focus:ring-4 focus:outline-none focus:ring-primary-300
                                 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700">
                         Sign in
@@ -63,7 +68,14 @@
         </div>
     </section>
 
+{% endblock %}
 
-
-
+{% block inline_javascript %}
+    {% if not debug %}
+        <script type="application/javascript">
+            function onSubmitLoginForm(token) {
+                document.getElementById("login-form").submit();
+            }
+        </script>
+    {% endif %}
 {% endblock %}

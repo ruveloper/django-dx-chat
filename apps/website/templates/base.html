@@ -33,6 +33,11 @@
         <!-- Vendor JS -->
         <script defer src="{% static 'vendor/flowbite/flowbite_1.6.2.min.js' %}"></script>
 
+        {% if not debug %}
+            <!-- reCAPTCHA v3 API -->
+            <script src="https://www.google.com/recaptcha/api.js"></script>
+        {% endif %}
+
         <!-- Project file -->
         {% compress js %}
             <script defer src="{% static 'js/main.js' %}"></script>

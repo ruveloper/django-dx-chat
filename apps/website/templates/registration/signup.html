@@ -14,7 +14,7 @@
                     Create and account
                 </h1>
 
-                <form class="space-y-4 md:space-y-6" method="post" novalidate>
+                <form id="signup-form" class="space-y-4 md:space-y-6" method="post" novalidate>
 
                     {% csrf_token %}
 
@@ -56,7 +56,12 @@
                     </div>
 
                     <button type="submit"
-                            class="w-full text-white bg-blue-600 hover:bg-blue-700
+                        {% if not debug %}
+                            data-sitekey="{{ g_recaptcha_publickey }}"
+                            data-callback='onSubmitSignUpForm'
+                            data-action='submit'
+                        {% endif %}
+                            class="g-recaptcha w-full text-white bg-blue-600 hover:bg-blue-700
                                 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg
                                 text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary-800">
                         Create an account
@@ -74,4 +79,15 @@
         </div>
     </section>
 
+{% endblock %}
+
+
+{% block inline_javascript %}
+    {% if not debug %}
+        <script type="application/javascript">
+            function onSubmitSignUpForm(token) {
+                document.getElementById("signup-form").submit();
+            }
+        </script>
+    {% endif %}
 {% endblock %}

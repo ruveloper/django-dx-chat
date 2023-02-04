@@ -58,6 +58,4 @@ class StateConsumer(JsonWebsocketConsumer):
     def state_users_online(self, obj: dict):
         # Add the authenticated user as entry
         obj["user"] = self.user.username
-        # Remove self user from users online list before send to client
-        obj["message"].pop(self.user.username) if self.user.username in obj["message"] else None  # fmt: skip
         self.send_json(obj)

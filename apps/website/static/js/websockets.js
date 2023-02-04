@@ -32,6 +32,7 @@ let activeUserWebsocket = null;
 let activeChatUser = null;
 let activeLoggedUser = null;
 let activeSendChatMessage = false;
+let connectedChatRoomUsers = {}; // ex: { username1: [username1,username2], username2:  ... }
 
 // * Listerners
 // * Chat Messages Windows Scroll -
@@ -139,6 +140,14 @@ function openChat(chatUser, chatUserAvatar) {
             addChatMessage(chatMessage["type"], chatMessage["user"], chatMessage["message"])
         })
     }
+    // * Enable send chat elements
+    if (chatUser === "echo") {
+        activateSendChatMessage(activeLoggedUser, chatUser, [activeLoggedUser, chatUser])
+    }
+    else {
+        let connectedUsers = chatUser in connectedChatRoomUsers ? connectedChatRoomUsers[chatUser] : []
+        activateSendChatMessage(activeLoggedUser, chatUser, connectedUsers)
+    }
     // Show chat window
     toggleChatWindow();
     // Set active chat entry
@@ -212,7 +221,7 @@ function storeChatMessage(chatUser, type, user, message) {
 function activateSendChatMessage(loggedUser, chatUser, connectedUsers) {
     // * If both users are connected, active function (and html elements) to send chat messages,
     // * otherwise, desactivate
-    if(connectedUsers.includes(loggedUser) && connectedUsers.includes(chatUser) ){
+    if (connectedUsers.includes(loggedUser) && connectedUsers.includes(chatUser)) {
         chatInputMessageEl.removeAttribute("disabled");
         chatSendMessageEl.removeAttribute("disabled");
         activeSendChatMessage = true;
@@ -224,7 +233,7 @@ function activateSendChatMessage(loggedUser, chatUser, connectedUsers) {
 }
 
 function sendChatMessage() {
-    if(!activeSendChatMessage){
+    if (!activeSendChatMessage) {
         return;
     }
     // Get message from chat input
@@ -245,7 +254,8 @@ function sendChatMessage() {
 
 // * Websockets
 function connectStateWebsocket() {
-    const stateWebsocket = new WebSocket(`ws://${window.location.host}/state/`)
+    const protocol = location.protocol === "https:" ? "wss:" : "ws:"
+    const stateWebsocket = new WebSocket(`${protocol}//${window.location.host}/state/`)
     // Websockets events
     stateWebsocket.onopen = function (e) {
         console.log("The user state connection was OPEN");
@@ -269,9 +279,10 @@ function connectStateWebsocket() {
 
 function connectUserWebsocket(chatUser) {
     // Assing the socket url based on the selected chatUser
+    const protocol = location.protocol === "https:" ? "wss:" : "ws:"
     const ws_url = chatUser === "echo"
-        ? `ws://${window.location.host}/chat/echo/`
-        : `ws://${window.location.host}/chat/?chat_user=${chatUser}`
+        ? `${protocol}//${window.location.host}/chat/echo/`
+        : `${protocol}//${window.location.host}/chat/?chat_user=${chatUser}`
     // Create a new Socket
     const userWebsocket = new WebSocket(ws_url);
     // Websockets events
@@ -285,8 +296,11 @@ function connectUserWebsocket(chatUser) {
     userWebsocket.onmessage = function (e) {
         const data = JSON.parse(e.data)
         // * Handle chat room type messages
-        if(data["type"].includes("chat.room.users")) {
-            activateSendChatMessage(data["user"], data["chat_user"], data["message"])
+        if (data["type"].includes("chat.room.users")) {
+            // * Store connected users in the chat room
+            connectedChatRoomUsers[data["chat_user"]] = data["message"];
+            // * Enable send chat elements in chat window
+            activateSendChatMessage(data["user"], data["chat_user"], data["message"]);
         }
         // * Handle chat user messages and information type
         if (data["type"].includes("chat.message") || data["type"].includes("chat.information")) {
@@ -296,9 +310,6 @@ function connectUserWebsocket(chatUser) {
             }
             // Store chat message in userChatMessages except for chat.information type
             storeChatMessage(chatUser, data["type"], data["user"], data["message"])
-            // data["type"] !== "chat.information"
-            //     ? storeChatMessage(chatUser, data["type"], data["user"], data["message"])
-            //     : null
         }
     }
     // Store websocket object and return

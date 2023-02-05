@@ -75,6 +75,7 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     "channels",
+    "django_minify_html",
 ]
 LOCAL_APPS = [
     "apps.chat",
@@ -135,6 +136,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # * ----------------- THIRD-PARTY -----------------
+    "django_minify_html.middleware.MinifyHtmlMiddleware",
 ]
 
 # STATIC

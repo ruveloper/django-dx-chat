@@ -20,6 +20,7 @@ CACHES = {
         # https://docs.djangoproject.com/en/4.1/topics/cache/#redis
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
         "LOCATION": f'redis://{env("REDIS_HOST")}:{env("REDIS_PORT")}',
+        "KEY_PREFIX": PROJECT_NAME,  # noqa:F405
     }
 }
 
@@ -158,6 +159,7 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [(env("REDIS_HOST"), env.int("REDIS_PORT"))],
+            "prefix": f"{PROJECT_NAME}:asgi",  # noqa:F405
         },
     },
 }

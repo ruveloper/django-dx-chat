@@ -6,6 +6,8 @@ from pathlib import Path
 import environ
 from django.utils.translation import gettext_lazy as _
 
+PROJECT_NAME = "DJANGO_DX_CHAT"
+
 # DIRECTORIES
 # ------------------------------------------------------------------------------
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent

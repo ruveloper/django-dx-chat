@@ -77,7 +77,8 @@ class ChatConsumer(JsonWebsocketConsumer):
         self.user: User = self.scope["user"]
         if not self.user.is_authenticated:
             return
-        # Get chat user from query params and generate room if exists
+
+        # Get chat user from query params and generate the room name if the same user exists in database
         query_params = dict(parse_qsl(self.scope["query_string"].decode("utf-8")))
         self.chat_user = query_params["chat_user"]
         self.chat_room_name = generate_chat_room_name(
@@ -85,13 +86,16 @@ class ChatConsumer(JsonWebsocketConsumer):
         )
         if not self.chat_room_name:
             return
+
         # Connect websocket
         self.accept()
         logger.info(f"Connected websocket for {self.chat_user} in chat room {self.chat_room_name}")  # fmt: skip
+
         # * -------- Add user to chat room -------
         ChatRoomsCache.add_user_to_chat_room(self.chat_room_name, self.user)
+
         # * ----------- CHANNEL LAYERS -----------
-        # Create channel layer with using the chat room name
+        # Create a channel layer group with the chat room name
         async_to_sync(self.channel_layer.group_add)(self.chat_room_name, self.channel_name)  # fmt: skip
         # * Send users connected in the chat room
         self.send_chat_room_users_connected()
@@ -116,7 +120,7 @@ class ChatConsumer(JsonWebsocketConsumer):
         return super().receive_json(content, **kwargs)
 
     def disconnect(self, code):
-        # * -------- Add user to chat room -------
+        # * -------- Remove user from chat room -------
         ChatRoomsCache.remove_user_from_chat_room(self.chat_room_name, self.user)
         # * Send users connected in the chat room
         self.send_chat_room_users_connected()
@@ -141,14 +145,15 @@ class ChatConsumer(JsonWebsocketConsumer):
         self.send_to_channel_group(
             {
                 "type": "chat.room.users",
-                "user": self.user.username,
-                "chat_user": self.chat_user,
                 "message": ChatRoomsCache.get_chat_room_usernames_as_list(self.chat_room_name),  # fmt: skip
             }
         )
 
     # * HANDLERS
     def chat_room_users(self, obj: dict):
+        # Add users to the message before send to each client
+        obj["user"] = self.user.username
+        obj["chat_user"] = self.chat_user
         self.send_json(obj)
 
     def chat_information(self, obj: dict):

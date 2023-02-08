@@ -11,6 +11,12 @@ Chat web application using Django, Django Channels, Websockets and Web Technolog
 [![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)](http://www.djangoproject.com/)
 [![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindui.com/)
 
+## :rocket: Try [dxChat](https://dxchat.ruveloper.dev) :globe_with_meridians:
+The project is **LIVE** and can be accessed at the following link [dxChat](https://dxchat.ruveloper.dev).
+
+https://user-images.githubusercontent.com/101607822/217402815-8cdb7db1-432a-4682-854b-617e304fa2e1.mp4
+
+
 ## Features
 
 ### Project-wide features
@@ -22,6 +28,7 @@ Chat web application using Django, Django Channels, Websockets and Web Technolog
 * HTML templates system
 * Scalable project structure
 * Production-ready setup
+* reCaptcha v3 form validation
 
 ### Chat client features
 

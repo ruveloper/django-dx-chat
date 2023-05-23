@@ -6,26 +6,32 @@
 
 {% block content %}
 
-    <div class="w-full p-16 flex flex-col items-center justify-center flex-wrap gap-8
+    <div class="p-2 flex flex-col items-center justify-center text-center dark:text-white">
+        <h1 class="text-xl font-bold mb-4">DxChat: Real-Time Chat Application</h1>
+        <p class="text-md mb-4">To get started, register for an account or log in using our convenient test
+            accounts.</p>
+    </div>
+
+    <div class="w-full flex flex-col items-center justify-center flex-wrap gap-8
                 md:flex-row">
 
-            <div class="flex flex-col items-center justify-center">
-                <img class="w-80" src="{% static 'images/signin.svg' %}" alt="">
-                <p class="font-medium dark:text-white">You are not logged in</p>
-                <a href="{% url 'website:login' %}"
-                   class="inline-flex text-white bg-blue-600 hover:bg-blue-800
+        <div class="flex flex-col items-center justify-center">
+            <img class="w-80" src="{% static 'images/signin.svg' %}" alt="">
+            <p class="font-medium dark:text-white">You are not logged in</p>
+            <a href="{% url 'website:login' %}"
+               class="inline-flex text-white bg-blue-600 hover:bg-blue-800
                    font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4">
-                    Sign In</a>
-            </div>
+                Log In</a>
+        </div>
 
-            <div class="flex flex-col items-center justify-center">
-                <img class="w-80" src="{% static 'images/signup.svg' %}" alt="">
-                <p class="font-medium dark:text-white">Don't have an account yet?  Sign Up</p>
-                <a href="{% url 'website:signup' %}"
-                   class="inline-flex text-white bg-blue-600 hover:bg-blue-800
+        <div class="flex flex-col items-center justify-center">
+            <img class="w-80" src="{% static 'images/signup.svg' %}" alt="">
+            <p class="font-medium dark:text-white">Don't have an account yet? Sign Up</p>
+            <a href="{% url 'website:signup' %}"
+               class="inline-flex text-white bg-blue-600 hover:bg-blue-800
                    font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4">
-                    Sign Up</a>
-            </div>
+                Sign Up</a>
+        </div>
 
     </div>
 
